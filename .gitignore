@@ -1,0 +1,46 @@
+# .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+*.log
+*.log.*
+logs/
+pip-log.txt
+pip-delete-this-directory.txt
+.Python
+celerybeat-schedule
+*.pid
+*.pid.lock
+
+# Virtual Environment
+venv/
+env/
+.venv/
+include/
+lib/
+bin/
+*.swp
+
+# Konfigurasi & Data Sensitif
+.env          # <--- Sangat Penting!
+
+# Unduhan Sementara
+downloads/
+*.mp4
+*.mkv
+*.webm
+*.m4a
+*.part
+*.ytdl
+
+# VSC
+.vscode/
+
+# Termux
+.termux/
