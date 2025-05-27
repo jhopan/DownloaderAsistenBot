@@ -2,6 +2,7 @@
 import re
 
 def identify_platform(url: str) -> str:
+    """Mengidentifikasi platform media sosial dari URL."""
     url = url.lower()
     if re.search(r"(youtube\.com|youtu\.be)", url):
         return "youtube"

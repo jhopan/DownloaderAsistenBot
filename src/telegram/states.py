@@ -1,5 +1,8 @@
 # src/telegram/states.py
-
-# Definisi State (Scene) untuk ConversationHandler
-# Setiap angka mewakili satu langkah atau 'scene' dalam percakapan.
-(SELECT_PLATFORM, AWAIT_LINK, SELECT_RESOLUTION) = range(3)
+(
+    SELECT_PLATFORM,
+    SELECT_DOWNLOAD_TYPE,
+    AWAIT_LINK,
+    SELECT_RESOLUTION_VIDEO,
+    SELECT_QUALITY_AUDIO
+) = range(5)

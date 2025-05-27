@@ -1,17 +1,14 @@
-# src/services/instagram.py
+# src/services/tiktok.py
 import yt_dlp
 import logging
 import os
-from .downloader_base import get_human_readable_size, get_common_ydl_opts
-from config import IG_USERNAME, IG_PASSWORD, TEMP_DOWNLOAD_PATH
+from service.downloader_base import get_human_readable_size, get_common_ydl_opts
+from config import TEMP_DOWNLOAD_PATH
 
 logger = logging.getLogger(__name__)
 
 async def get_video_formats(url: str) -> list | None:
     ydl_opts = {'quiet': True, 'no_warnings': True}
-    if IG_USERNAME and IG_PASSWORD:
-        ydl_opts['username'] = IG_USERNAME
-        ydl_opts['password'] = IG_PASSWORD
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
@@ -20,28 +17,25 @@ async def get_video_formats(url: str) -> list | None:
                      'size_mb': get_human_readable_size(size) if size else 'Unknown',
                      'size_bytes': size, 'url': url, 'has_audio': True}]
     except Exception as e:
-        logger.warning(f"Gagal mendapatkan info format video Instagram ({url}): {e}. Menawarkan opsi default.")
+        logger.warning(f"Gagal mendapatkan info format video TikTok ({url}): {e}. Menawarkan opsi default.")
         return [{'id': 'best', 'res': 'Best Quality', 'size_mb': 'Unknown',
                  'size_bytes': None, 'url': url, 'has_audio': True}]
 
 async def download_video(url: str, format_id: str = 'best') -> str | None:
     ydl_opts = get_common_ydl_opts()
     ydl_opts['format'] = 'best'
-    if IG_USERNAME and IG_PASSWORD:
-        ydl_opts['username'] = IG_USERNAME
-        ydl_opts['password'] = IG_PASSWORD
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
-            logger.info(f"Instagram video diunduh: {filename}")
+            logger.info(f"TikTok video diunduh: {filename}")
             return filename
     except Exception as e:
-        logger.error(f"Gagal mengunduh video Instagram ({url}): {e}")
+        logger.error(f"Gagal mengunduh video TikTok ({url}): {e}")
         return None
 
 async def get_audio_formats(url: str) -> list | None:
-    logger.info(f"get_audio_formats dipanggil untuk Instagram ({url}), akan menawarkan konversi default.")
+    logger.info(f"get_audio_formats dipanggil untuk TikTok ({url}), akan menawarkan konversi default.")
     return None
 
 async def download_audio(url: str, format_id: str = 'best_video_for_audio_extraction', preferred_format: str = 'mp3') -> str | None:
@@ -51,9 +45,6 @@ async def download_audio(url: str, format_id: str = 'best_video_for_audio_extrac
     ydl_opts['extract_audio'] = True
     ydl_opts['audioformat'] = preferred_format
     ydl_opts['audioquality'] = '0'
-    if IG_USERNAME and IG_PASSWORD:
-        ydl_opts['username'] = IG_USERNAME
-        ydl_opts['password'] = IG_PASSWORD
     if preferred_format == 'mp3':
         ydl_opts['postprocessor_args'] = ['-b:a', '192k']
     try:
@@ -76,8 +67,8 @@ async def download_audio(url: str, format_id: str = 'best_video_for_audio_extrac
             if not os.path.exists(filename):
                  logger.error(f"File audio akhir {filename} tidak ditemukan setelah proses download/konversi.")
                  return None
-            logger.info(f"Instagram audio diunduh dan dikonversi: {filename}")
+            logger.info(f"TikTok audio diunduh dan dikonversi: {filename}")
             return filename
     except Exception as e:
-        logger.error(f"Gagal mengunduh/mengonversi audio Instagram ({url}, to: {preferred_format}): {e}")
+        logger.error(f"Gagal mengunduh/mengonversi audio TikTok ({url}, to: {preferred_format}): {e}")
         return None

@@ -2,7 +2,7 @@
 import yt_dlp
 import logging
 import os
-from .downloader_base import get_human_readable_size, get_common_ydl_opts
+from service.downloader_base import get_human_readable_size, get_common_ydl_opts
 from config import IG_USERNAME, IG_PASSWORD, TEMP_DOWNLOAD_PATH
 
 logger = logging.getLogger(__name__)
